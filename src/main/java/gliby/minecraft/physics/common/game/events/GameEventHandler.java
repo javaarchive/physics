@@ -21,9 +21,12 @@ import javax.vecmath.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  *
  */
+class BFSState
+
 public class GameEventHandler {
 
     protected Physics physics;
@@ -103,6 +106,7 @@ public class GameEventHandler {
                 List<EntityPhysicsBlock> affectedEntities = new ArrayList<EntityPhysicsBlock>();
                 for (int i = 0; i < event.getAffectedBlocks().size(); i++) {
                     BlockPos pos = event.getAffectedBlocks().get(i);
+                    
                     IBlockState blockState = event.getWorld().getBlockState(pos);
                     PhysicsBlockMetadata metadata = physics.getBlockManager().getPhysicsBlockMetadata()
                             .get(physics.getBlockManager().getBlockIdentity(blockState.getBlock()));

@@ -1,0 +1,16 @@
+{
+    "workbench.iconTheme": "theia-file-icons",
+    "java.configuration.checkProjectSettingsExclusions": false,
+    "workbench.colorTheme": "Default Dark+",
+    "java.eclipse.downloadSources": true,
+    "java.home":"/home/gitpod/.sdkman/candidates/java/11.0.11.fx-zulu",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-1.8",
+            "path": "/home/gitpod/.sdkman/candidates/java/8.0.292-open",
+          },{
+            "name": "JavaSE-11",
+            "path": "/home/gitpod/.sdkman/candidates/java/11.0.11.fx-zulu",
+        }
+    ]
+}

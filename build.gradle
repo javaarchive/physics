@@ -106,31 +106,31 @@ artifacts {
     archives sourceJar
 }
 
-curseforge {
-    if (project.hasProperty('curseforge_key')) {
-        apiKey = project.curseforge_key
-    }
-
+//curseforge {
+//    if (project.hasProperty('curseforge_key')) {
+//        apiKey = project.curseforge_key
+//    }
+//
     //noinspection GroovyAssignabilityCheck
-    project {
-        id = project.projectId
-        releaseType = project.curse_type
-        changelog = "Changes."
-        if (project.hasProperty("curseforge_key")) {
-            changelog = getChanges()
-            changelogType = "markdown"
-        }
+//    project {
+//        id = project.projectId
+//        releaseType = project.curse_type
+//        changelog = "Changes."
+//        if (project.hasProperty("curseforge_key")) {
+//            changelog = getChanges()
+//            changelogType = "markdown"
+//        }
 
-        mainArtifact(jar) {
-            displayName = String.format("%s %s", getModName(), mod_version)
-            logger.lifecycle("Prepared CurseForge artifact: " + displayName)
+//        mainArtifact(jar) {
+//            displayName = String.format("%s %s", getModName(), mod_version)
+//            logger.lifecycle("Prepared CurseForge artifact: " + displayName)
 
-            relations {
-                optionalDependency 'dynamic-lights'
-            }
-        }
-    }
-}
+//            relations {
+//                optionalDependency 'dynamic-lights'
+//            }
+//        }
+//    }
+// }
 
 def getChanges() {
     String patchNotesDir = '.patchnotes'
