@@ -25,11 +25,16 @@ import java.util.List;
 /**
  *
  */
-class BFSState
+class BFSState{
+    int depth = 0;
+    BlockPos b;
+}
 
 public class GameEventHandler {
 
     protected Physics physics;
+
+    public final int EXPLODE_DEPTH=10;
 
     public GameEventHandler(Physics physics) {
         this.physics = physics;
@@ -81,7 +86,8 @@ public class GameEventHandler {
                                 entityFallingBlock.posX - PhysicsOverworld.OFFSET, entityFallingBlock.posY - PhysicsOverworld.OFFSET, entityFallingBlock.posZ - PhysicsOverworld.OFFSET);
                         // Disable collision, because playing survival with Physics Falling blocks is annoying.
                         // TODO (0.8.0) FEATURE Survival collision issues, could be fixed if Physics Block were diggable.
-                        world.spawnEntity(analog.setEntityCollisionEnabled(false).setGameSpawned(true));
+                        // actually getting hit might be satsiftying so I set this to true
+                        world.spawnEntity(analog.setEntityCollisionEnabled(true).setGameSpawned(true));
                     }
                 });
             }
