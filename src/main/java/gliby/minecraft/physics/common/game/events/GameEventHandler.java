@@ -19,22 +19,30 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 
 
 /**
  *
  */
 class BFSState{
+    BFSState(BlockPos bp,int depth){
+        this.depth = depth;
+        this.pos = bp;    
+    }
     int depth = 0;
-    BlockPos b;
+    BlockPos pos;
 }
 
 public class GameEventHandler {
 
     protected Physics physics;
 
-    public final int EXPLODE_DEPTH=10;
+    public static final int EXPLODE_DEPTH=10;
 
     public GameEventHandler(Physics physics) {
         this.physics = physics;
@@ -110,8 +118,41 @@ public class GameEventHandler {
                         (float) event.getExplosion().getPosition().y, (float) event.getExplosion().getPosition().z);
 
                 List<EntityPhysicsBlock> affectedEntities = new ArrayList<EntityPhysicsBlock>();
-                for (int i = 0; i < event.getAffectedBlocks().size(); i++) {
-                    BlockPos pos = event.getAffectedBlocks().get(i);
+                
+                LinkedList<BlockPos> bPos = new LinkedList<BlockPos>(event.getAffectedBlocks());
+                // Set to keep track of BFS
+                
+                Set<BlockPos> visited = new HashSet<BlockPos>();
+                
+                // dx,dy,dz
+                int[] dx = {-1,1,0,0,0,0};
+                int[] dy = {0,0,-1,1,0,0};
+                int[] dz = {0,0,0,0,-1,1};
+
+                Queue<BFSState> q = new LinkedList<>();
+                for(BlockPos bp: bPos){
+                    visited.add(bp);
+                    q.add(new BFSState(bp, 0));
+                }
+                while(!q.isEmpty()){
+                    BFSState bps = q.poll();
+                    if(bps.depth > EXPLODE_DEPTH){
+                        continue;
+                    }
+                    BlockPos bp = bps.pos;
+                    
+                    for(int i = 0; i < 8; i ++){
+                        BlockPos newBP = bp.add(dx[i], dy[i], dz[i]);
+                        if(!visited.contains(newBP)){
+                            visited.add(bp);
+                            bPos.add(bp);
+                            q.add(new BFSState(newBP, bps.depth + 1));
+                        }
+                    }
+                }
+
+                for (int i = 0; i < bPos.size(); i++) {
+                    BlockPos pos = bPos.get(i);
                     
                     IBlockState blockState = event.getWorld().getBlockState(pos);
                     PhysicsBlockMetadata metadata = physics.getBlockManager().getPhysicsBlockMetadata()
